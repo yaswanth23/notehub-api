@@ -9,3 +9,23 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model user {
+  user_id       BigInt   @id
+  email         String   @unique
+  username      String
+  created_on    DateTime @default(now())
+  created_by    BigInt
+  updated_on    DateTime? @updatedAt
+  updated_by    BigInt?
+  auth_details  user_auth_passdetails?
+}
+
+model user_auth_passdetails {
+  user_id     BigInt       @id(map: "userauthpassdetails_pkey")
+  hashed_key  String?      @db.VarChar
+  salt_key    String?      @db.VarChar
+  created_at  DateTime?    @db.Timestamp(6)
+  updated_at  DateTime?    @db.Timestamp(6)
+  user        user         @relation(fields: [user_id], references: [user_id])
+}
