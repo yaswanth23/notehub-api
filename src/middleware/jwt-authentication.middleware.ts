@@ -25,10 +25,7 @@ export class JwtAuthenticationMiddleware implements NestMiddleware {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded;
     } catch (error) {
-      throw new HttpException(
-        'Authenticate token expired',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new HttpException('Invalid access token', HttpStatus.UNAUTHORIZED);
     }
 
     next();

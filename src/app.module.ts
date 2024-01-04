@@ -6,7 +6,9 @@ import { AppService } from './app.service';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { LoggingInterceptor } from './middleware/logging.interceptor';
 import { JsonHeaderInterceptor } from './middleware/jsonHeader.interceptor';
+import { JwtAuthenticationMiddleware } from './middleware/jwt-authentication.middleware';
 import { AuthModule } from './modules/auth/auth.module';
+import { NotesModule } from './modules/notes/notes.module';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     PrismaModule,
     AuthModule,
+    NotesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -29,4 +32,8 @@ import { AuthModule } from './modules/auth/auth.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JwtAuthenticationMiddleware).forRoutes('api/notes');
+  }
+}

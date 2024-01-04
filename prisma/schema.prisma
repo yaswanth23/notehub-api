@@ -18,7 +18,22 @@ model user {
   created_by    BigInt
   updated_on    DateTime? @updatedAt
   updated_by    BigInt?
+  notes         note[]
   auth_details  user_auth_passdetails?
+  noteShares    noteShare[]
+}
+
+model note {
+  note_id       BigInt   @id @default(autoincrement())
+  title         String
+  content       String
+  user_id       BigInt
+  created_on    DateTime @default(now())
+  created_by    BigInt
+  updated_on    DateTime? @updatedAt
+  updated_by    BigInt?
+  user          user     @relation(fields: [user_id], references: [user_id])
+  noteShares    noteShare[]
 }
 
 model user_auth_passdetails {
@@ -28,4 +43,13 @@ model user_auth_passdetails {
   created_at  DateTime?    @db.Timestamp(6)
   updated_at  DateTime?    @db.Timestamp(6)
   user        user         @relation(fields: [user_id], references: [user_id])
+}
+
+model noteShare {
+  note_id       BigInt
+  user_id       BigInt
+  note          note     @relation(fields: [note_id], references: [note_id])
+  user          user     @relation(fields: [user_id], references: [user_id])
+
+  @@id([note_id, user_id])
 }

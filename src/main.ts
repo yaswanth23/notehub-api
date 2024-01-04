@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { BigIntSerializerPipe } from './common/pipes/bigIntSerializer.pipe';
 import { BigIntInterceptor } from './common/interceptors/bigInt.interceptor';
 import { AuthModule } from './modules/auth/auth.module';
+import { NotesModule } from './modules/notes/notes.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +19,7 @@ async function bootstrap() {
       .addTag('NoteHub Code System')
       .build();
     const document = SwaggerModule.createDocument(app, config, {
-      include: [AuthModule],
+      include: [AuthModule, NotesModule],
       deepScanRoutes: true,
       operationIdFactory: (controllerKey: string, methodKey: string) =>
         methodKey,
