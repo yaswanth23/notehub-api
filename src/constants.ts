@@ -1,4 +1,5 @@
 export const STATUS_CODES = {
   STATUS_CODE_201: 201,
   STATUS_CODE_200: 200,
+  STATUS_CODE_409: 409,
 };

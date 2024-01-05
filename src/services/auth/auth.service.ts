@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignUpDto, LoginDto } from '../../models/dto/auth/auth.dto';
 import { IdGeneratorService } from '../idGenerator/idgenerator.service';
-import { STATUS_CODES } from 'src/constants';
+import { STATUS_CODES } from '../../constants';
 
 @Injectable()
 export class AuthService {

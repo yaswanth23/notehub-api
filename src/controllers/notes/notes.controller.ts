@@ -13,7 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { NotesService } from '../../services/notes/notes.service';
 import { Request as ExpressRequest } from 'express';
-import { CreateNotesDto, ShareNoteDto } from 'src/models/dto/notes/notes.dto';
+import { CreateNotesDto, ShareNoteDto } from '../../models/dto/notes/notes.dto';
 
 interface Request extends ExpressRequest {
   user: any;

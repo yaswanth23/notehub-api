@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateNotesDto, ShareNoteDto } from 'src/models/dto/notes/notes.dto';
-import { STATUS_CODES } from 'src/constants';
+import { STATUS_CODES } from '../../constants';
 
 @Injectable()
 export class NotesService {
@@ -131,6 +131,22 @@ export class NotesService {
       throw new NotFoundException(
         `User with ID ${shareData.sharedWithUserId} not found`,
       );
+    }
+
+    const existingShare = await this.prismaService.noteShare.findUnique({
+      where: {
+        note_id_user_id: {
+          note_id: BigInt(noteId),
+          user_id: BigInt(shareData.sharedWithUserId),
+        },
+      },
+    });
+
+    if (existingShare) {
+      return {
+        statusCode: STATUS_CODES.STATUS_CODE_409,
+        message: 'Note has already been shared with this user',
+      };
     }
 
     const data = await this.prismaService.noteShare.create({
