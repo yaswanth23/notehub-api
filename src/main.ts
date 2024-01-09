@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+const rateLimit = require('express-rate-limit');
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
@@ -10,6 +11,12 @@ import { NotesModule } from './modules/notes/notes.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      max: 10,
+    }),
+  );
   // enabling swagger only on development
   if (process.env.NODE_ENV === 'development') {
     const config = new DocumentBuilder()
